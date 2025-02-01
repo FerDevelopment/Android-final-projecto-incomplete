@@ -30,6 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.plantillalocal.R
 import com.example.proyectofinalandroid.modelo.Ruta
 import com.example.proyectofinalandroid.ui.pantallas.Inicio
+import com.example.proyectofinalandroid.ui.pantallas.PrintEspecies
 
 enum class Pantallas(@StringRes val titulo: Int) {
    Inicio(titulo = R.string.pantalla_inicio),
@@ -87,7 +88,8 @@ fun App(
             }
          }
       },
-      modifier = Modifier.fillMaxSize()
+      modifier = Modifier
+         .fillMaxSize()
    ) { innerPadding ->
       NavHost(
          navController = navController,
@@ -96,11 +98,15 @@ fun App(
       ) {
          // Grafo de las rutas
          composable(route = Pantallas.Inicio.name) {
-            Inicio(listaParques = viewModel.listaParques, actualizarListaEspecies = {
-               viewModel.actualizarListaEspecies()
-            })
+            Inicio(servidorUIState = viewModel.servidorUIState, actualizarListaEspecies = {
+               viewModel.actualizarListaParques()
+            }
+            )
          }
          composable(route = Pantallas.Pantalla1.name) {
+            PrintEspecies(servidorUIState = viewModel.servidorUIState, actualizarListaEspecies = {
+               viewModel.actualizarListaEspecies()
+            })
          }
          composable(route = Pantallas.Pantalla2.name) {
          }

@@ -8,22 +8,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.proyectofinalandroid.modelo.Parque
+import com.example.proyectofinalandroid.modelo.Especie
 
 @Composable
-fun CardParque(parque: Parque) {
+fun CardEspecie(entidad: Especie) {
    Card(
       modifier = Modifier
          .fillMaxWidth()
          .padding(10.dp)
    ) {
       Column(modifier = Modifier.padding(8.dp)) {
-         Text(parque.nombre)
-         Text(parque.id.toString())
-         Text(parque.extension.toString())/*
-                  for (especie in parque.especie) {
-                     Text(especie.nombre)
-                  }*/
+         Text(entidad.nombre)
+         Text(entidad.id.toString())
+         Text(entidad.descripcion)
       }
    }
 }
