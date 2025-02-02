@@ -1,7 +1,9 @@
 package com.example.proyectofinalandroid.ui.pantallas
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,7 +24,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.plantillalocal.R
 import com.example.proyectofinalandroid.modelo.UsuarioDB
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,7 +34,10 @@ import com.example.proyectofinalandroid.modelo.UsuarioDB
 fun TopBar(title: String, onBack: () -> Unit) {
    TopAppBar(title = { Text(title) }, navigationIcon = {
       IconButton(onClick = onBack) {
-         Icon(imageVector = Icons.Default.Clear, contentDescription = "Back")
+         Icon(
+            imageVector = Icons.Default.Clear,
+            contentDescription = stringResource(R.string.atras)
+         )
       }
    })
 }
@@ -45,7 +52,7 @@ fun ActualizarUsuarioScreen(usuario: UsuarioDB,
    var email by remember { mutableStateOf(usuario.email) }
 
    Scaffold(topBar = {
-      TopBar(title = "Actualizar Usuario", onBack = onVolver)
+      TopBar(title = stringResource(R.string.actualizar_usuario), onBack = onVolver)
    }) { paddingValues ->
       Column(
          modifier = Modifier
@@ -53,50 +60,55 @@ fun ActualizarUsuarioScreen(usuario: UsuarioDB,
             .padding(16.dp)
             .padding(paddingValues)
       ) {
-         OutlinedTextField(
-            value = nombre,
-            onValueChange = { nombre = it },
-            label = { Text("Nombre") },
-            modifier = Modifier.fillMaxWidth()
-         )
+         Column {
+            OutlinedTextField(
+               value = nombre,
+               onValueChange = { nombre = it },
+               label = { Text(stringResource(R.string.nombre)) },
+               modifier = Modifier.fillMaxWidth()
+            )
 
-         Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-         OutlinedTextField(
-            value = telefono,
-            onValueChange = { telefono = it },
-            label = { Text("Teléfono") },
-            modifier = Modifier.fillMaxWidth()
-         )
+            OutlinedTextField(
+               value = telefono,
+               onValueChange = { telefono = it },
+               label = { Text(stringResource(R.string.tel_fono)) },
+               modifier = Modifier.fillMaxWidth()
+            )
 
-         Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-         OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth()
-         )
+            OutlinedTextField(
+               value = email,
+               onValueChange = { email = it },
+               label = { Text(stringResource(R.string.email)) },
+               modifier = Modifier.fillMaxWidth()
+            )
 
-         Spacer(modifier = Modifier.height(16.dp))
-
-         Button(
-            onClick = {
-               val usuarioActualizado = usuario.copy(
-                  nombre = nombre, telefono = telefono, email = email
-               )
-               onActualizarUsuario(usuarioActualizado)
-            }, modifier = Modifier.fillMaxWidth()
-         ) {
-            Text("Actualizar")
+            Spacer(modifier = Modifier.height(16.dp))
          }
 
-         Spacer(modifier = Modifier.height(8.dp))
+         Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {
+            Button(
+               onClick = {
+                  val usuarioActualizado = usuario.copy(
+                     nombre = nombre, telefono = telefono, email = email
+                  )
+                  onActualizarUsuario(usuarioActualizado)
+                  onVolver()
+               }, modifier = Modifier.fillMaxWidth()
+            ) {
+               Text(stringResource(R.string.actualizar))
+            }
 
-         Button(
-            onClick = onVolver, modifier = Modifier.fillMaxWidth()
-         ) {
-            Text("Cancelar")
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(
+               onClick = onVolver, modifier = Modifier.fillMaxWidth()
+            ) {
+               Text(stringResource(R.string.cancelar))
+            }
          }
       }
    }

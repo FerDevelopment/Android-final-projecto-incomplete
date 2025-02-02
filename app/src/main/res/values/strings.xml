@@ -1,5 +1,23 @@
 <resources>
-    <string name="app_name">ProyectoFinalAndroid</string><string name="pantalla_inicio">Parques</string><string name="pantalla1">Especies</string><string name="pantalla2">Parques favoritos</string>
-    <string name="atras">atras</string><string name="favoritos">favoritos</string><string name="todos">todos</string>
+    <string name="app_name">ProyectoFinalAndroid</string>
+    <string name="pantalla_inicio">Parques</string>
+    <string name="pantalla1">Especies</string>
+
+    <string name="atras">Atras</string>
+
     <string name="ajustes">Ajustes</string>
+    <string name="nombre">Nombre</string>
+    <string name="extension">Extensión</string>
+    <string name="descripcion">Descripción</string>
+    <string name="error_manito_d">Error Manita/o D:\nHable con el Developer\nCodError:404</string>
+
+    <string name="actualizar_usuario">Actualizar Usuario</string>
+    <string name="tel_fono">Teléfono</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="actualizar">Actualizar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="informacion_del_usuario">Informacion del Usuario</string>
+    <string name="nombre2">"Nombre: "</string>
+    <string name="telefono2">"Telefono: "</string>
+    <string name="email2" translatable="false">"Email: "</string>
 </resources>

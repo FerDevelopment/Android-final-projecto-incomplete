@@ -2,7 +2,6 @@ package com.example.proyectofinalandroid.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -53,6 +53,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.plantillalocal.R
 import com.example.proyectofinalandroid.modelo.Ruta
+import com.example.proyectofinalandroid.modelo.UsuarioDB
 import com.example.proyectofinalandroid.ui.pantallas.ActualizarUsuarioScreen
 import com.example.proyectofinalandroid.ui.pantallas.Inicio
 import com.example.proyectofinalandroid.ui.pantallas.PrintEspecies
@@ -91,11 +92,39 @@ fun App(
    coroutineScope: CoroutineScope = rememberCoroutineScope(),
    drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
 ) {
-   var selectedItem by remember { mutableIntStateOf(0) }
    val pilaRetroceso by navController.currentBackStackEntryAsState()
    val pantallaActual = Pantallas.valueOf(
       pilaRetroceso?.destination?.route ?: Pantallas.Inicio.name
    )
+   // Si la pantalla actual es "Pantalla2", mostramos solo ActualizarUsuarioScreen
+   if (pantallaActual.name == Pantallas.Pantalla2.name) {
+      ActualizarUsuarioScreen(
+         onActualizarUsuario = { viewModel.actualizarUsuarioDB(it) },
+         onVolver = { navController.popBackStack() },
+         usuario = viewModel.usuarioDB
+      )
+   } else {
+      // Mostramos el scaffold principal en cualquier otra pantalla
+      AppScaffold(
+         navController,
+         viewModel,
+         coroutineScope,
+         drawerState,
+         pantallaActual
+      )
+   }
+}
+
+@Composable
+fun AppScaffold(
+   navController: NavHostController = rememberNavController(),
+   viewModel: GenericoViewModel = viewModel(factory = GenericoViewModel.Factory),
+   coroutineScope: CoroutineScope = rememberCoroutineScope(),
+   drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
+   pantallaActual: Pantallas,
+) {
+   var selectedItem by remember { mutableIntStateOf(0) }
+
 
 
    ModalNavigationDrawer(
@@ -104,7 +133,8 @@ fun App(
          ModalDrawerSheet {
             DrawerContent(
                menu = menu,
-               pantallaActual = pantallaActual
+               pantallaActual = pantallaActual,
+               usuarioDB = viewModel.usuarioDB
             ) { ruta ->
                coroutineScope.launch {
                   drawerState.close()
@@ -142,7 +172,8 @@ fun App(
                      selected = selectedItem == indice,
                      onClick = {
                         selectedItem = indice
-                        navController.navigate(ruta.ruta)
+                        navController.navigate(ruta.ruta) {
+                        }
                      }
                   )
                }
@@ -184,25 +215,32 @@ fun App(
 
 @Composable
 private fun DrawerContent(
+   usuarioDB: UsuarioDB,
    menu: Array<Ruta<String>>,
    pantallaActual: Pantallas,
-   onMenuClick: (String) -> Unit
+   onMenuClick: (String) -> Unit,
 ) {
    Column(
-      modifier = Modifier.fillMaxSize()
+      modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
    ) {
-      Box(
+      Column(
          modifier = Modifier
             .fillMaxWidth()
             .height(200.dp),
-         contentAlignment = Alignment.Center
+         horizontalAlignment = Alignment.CenterHorizontally
       ) {
          Image(
-            modifier = Modifier.size(150.dp),
+            modifier = Modifier.size(100.dp),
             imageVector = Icons.Filled.AccountCircle,
             contentScale = ContentScale.Crop,
             contentDescription = null
          )
+         Column {
+            Text(stringResource(R.string.informacion_del_usuario), fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.nombre2) + usuarioDB.nombre)
+            Text(stringResource(R.string.telefono2) + usuarioDB.telefono)
+            Text(stringResource(R.string.email2) + usuarioDB.email)
+         }
       }
       Spacer(modifier = Modifier.height(12.dp))
       menu.forEach {

@@ -25,7 +25,6 @@ class ContenedorApp(private val context: Context) : ContenedorAppp {
    override val servidorRepositorio: ServidorRepositorio by lazy {
       ConexionRepositorioServidor(servicioRetrofit)
    }
-
    override val internoRepositorio: RepositorioInterno by lazy {
       ConexionGenericaRepositorioInterno(BaseDeDatos.obtenerBaseDatos(context).claseGenericaDao())
    }

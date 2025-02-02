@@ -91,19 +91,36 @@ class GenericoViewModel(private val servidorRepositorio: ServidorRepositorio,
       }
    }
 
-   fun actualizarUsuarioDB(usuarioDB: UsuarioDB) {
+   fun actualizarUsuarioDB(_usuarioDB: UsuarioDB) {
+      viewModelScope.launch {
+         try {
+            internoRepositorio.actualizar(_usuarioDB)
+            usuarioDB = _usuarioDB
 
+         } catch (_: Exception) {
+            obtenerUsuarios()
+         }
+      }
+   }
+
+   init {
+      obtenerUsuarios()
    }
 
    private fun obtenerUsuarios() {
       viewModelScope.launch {
-         val listaUser = internoRepositorio.obtenerTodos()
-         if (listaUser.isEmpty()) {
-            internoRepositorio.insertar(usuarioDB)
-         } else {
-            usuarioDB = listaUser.get(0)
+         try {
+            val listaUser = internoRepositorio.obtenerTodos()
+            if (listaUser.isEmpty()) {
+               internoRepositorio.insertar(usuarioDB)
+            } else {
+               usuarioDB = listaUser.get(0)
+            }
+         } catch (_: Exception
+         ) {
          }
       }
+
    }
 
    companion object {
