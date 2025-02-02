@@ -5,9 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.proyectofinalandroid.dao.ClaseGenericaDao
-import com.example.proyectofinalandroid.modelo.ClaseGenerica
+import com.example.proyectofinalandroid.modelo.UsuarioDB
 
-@Database(entities = [ClaseGenerica::class], version = 1, exportSchema = false)
+@Database(entities = [UsuarioDB::class], version = 1, exportSchema = false)
 abstract class BaseDeDatos : RoomDatabase() {
    abstract fun claseGenericaDao(): ClaseGenericaDao
 

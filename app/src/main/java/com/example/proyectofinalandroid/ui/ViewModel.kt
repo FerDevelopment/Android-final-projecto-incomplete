@@ -12,9 +12,9 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.proyectofinalandroid.Aplicacion
 import com.example.proyectofinalandroid.datos.RepositorioInterno
 import com.example.proyectofinalandroid.datos.ServidorRepositorio
-import com.example.proyectofinalandroid.modelo.ClaseGenerica
 import com.example.proyectofinalandroid.modelo.Especie
 import com.example.proyectofinalandroid.modelo.Parque
+import com.example.proyectofinalandroid.modelo.UsuarioDB
 import kotlinx.coroutines.launch
 
 sealed interface ServidorUIState {
@@ -28,9 +28,9 @@ sealed interface ServidorUIState {
 }
 
 sealed interface InternoUIState {
-   data class ObtenerExito(val entidad: List<ClaseGenerica>) : InternoUIState
-   data class CrearExito(val entidad: ClaseGenerica) : InternoUIState
-   data class ActualizarExito(val entidad: ClaseGenerica) : InternoUIState
+   data class ObtenerExito(val entidad: List<UsuarioDB>) : InternoUIState
+   data class CrearExito(val entidad: UsuarioDB) : InternoUIState
+   data class ActualizarExito(val entidad: UsuarioDB) : InternoUIState
    data class EliminarExito(val id: String) : InternoUIState
 
    object Error : InternoUIState
@@ -43,6 +43,14 @@ class GenericoViewModel(private val servidorRepositorio: ServidorRepositorio,
    var servidorUIState: ServidorUIState by mutableStateOf(ServidorUIState.Cargando)
    var internoUIState: InternoUIState by mutableStateOf(
       InternoUIState.Cargando
+   )
+   var usuarioDB: UsuarioDB by mutableStateOf(
+      UsuarioDB(
+         nombre = "Fernando Martinez Burgos",
+         telefono = "123 456 789",
+         email = "Faaronmb@gmail.com",
+         id = 1
+      )
    )
 
    fun actualizarListaParques() {
@@ -57,21 +65,44 @@ class GenericoViewModel(private val servidorRepositorio: ServidorRepositorio,
 
    private fun obtenerListaEspecies() {
       viewModelScope.launch {
-         servidorUIState = ServidorUIState.Cargando
-         val listaEpecie = servidorRepositorio.obtenerEspecies()
+         try {
+            servidorUIState = ServidorUIState.Cargando
+            val listaEpecie = servidorRepositorio.obtenerEspecies()
 
 
-         servidorUIState = ServidorUIState.ObtenerExitoEspecies(listaEpecie)
+            servidorUIState = ServidorUIState.ObtenerExitoEspecies(listaEpecie)
+         } catch (e: Exception) {
+            servidorUIState = ServidorUIState.Error
+         }
       }
    }
 
    private fun obtenerListaParques() {
       viewModelScope.launch {
-         servidorUIState = ServidorUIState.Cargando
-         val listaPaques = servidorRepositorio.obtenerParques()
+         try {
+            servidorUIState = ServidorUIState.Cargando
+            val listaPaques = servidorRepositorio.obtenerParques()
 
 
-         servidorUIState = ServidorUIState.ObtenerExitoParques(listaPaques)
+            servidorUIState = ServidorUIState.ObtenerExitoParques(listaPaques)
+         } catch (e: Exception) {
+            servidorUIState = ServidorUIState.Error
+         }
+      }
+   }
+
+   fun actualizarUsuarioDB(usuarioDB: UsuarioDB) {
+
+   }
+
+   private fun obtenerUsuarios() {
+      viewModelScope.launch {
+         val listaUser = internoRepositorio.obtenerTodos()
+         if (listaUser.isEmpty()) {
+            internoRepositorio.insertar(usuarioDB)
+         } else {
+            usuarioDB = listaUser.get(0)
+         }
       }
    }
 

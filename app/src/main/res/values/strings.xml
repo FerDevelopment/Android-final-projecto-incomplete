@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ProyectoFinalAndroid</string><string name="pantalla_inicio">Parques</string><string name="pantalla1">Especies</string><string name="pantalla2">Parques favoritos</string>
+    <string name="atras">atras</string><string name="favoritos">favoritos</string><string name="todos">todos</string>
+    <string name="ajustes">Ajustes</string>
 </resources>
